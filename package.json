@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for xber-space",
+  "main": "dist/index",
+  "scripts": {
+    "dev": "nodemon ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "0xBer",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
