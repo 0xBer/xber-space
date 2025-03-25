@@ -2,20 +2,25 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./dist/server"
   },
   "keywords": [],
   "author": "0xBer",
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
-    "@types/express": "^5.0.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/pg": "^8.11.11",
+    "nodemon": "^3.1.9",
     "typescript": "^5.8.2"
   }
 }
