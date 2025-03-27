@@ -7,7 +7,7 @@ dotenv.config();
 
 const SECRET = process.env.SECRET as string;
 
-export const register = async (req: Request, res: Response) => {
+export const create = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
 
@@ -21,34 +21,38 @@ export const register = async (req: Request, res: Response) => {
 
         const newUser = await pool.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
 
-        const token = jwt.sign({ userId: newUser.rows[0].id }, SECRET, { expiresIn: "1h" });
-
-        return res.status(200).json({ token });
+        return res.status(200).json(newUser.rows);
     } catch (error) {
         return res.status(401).json({ message: "Cant register" });
     }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const getOne = async (req: Request, res: Response) => {
     try {
-        const { username, password } = req.body;
+        const { id } = req.params;
 
-        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username])
+        const user = await pool.query("SELECT * FROM users WHERE id = $1", [id])
         if (user.rows.length === 0) {
-            return res.status(401).json({ message: "Wrong login or password1" });
+            return res.status(401).json({ message: `Cant get user with id: ${id}` });
         }
 
-        const isMatch = await bcrypt.compare(password, user.rows[0].password);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Wrong login or password2" });
+        return res.status(200).json(user.rows)
+    } catch (error) {
+        return res.status(401).json({ message: "Cant get user" });
+    }
+};
+
+export const getAll = async (req: Request, res: Response) => {
+    try {
+        const users = await pool.query("SELECT * FROM users");
+
+        if (users.rows.length === 0) {
+            return res.status(401).json({ message: "No users were found" });
         }
 
-        const token = jwt.sign({ userId: user.rows[0].id }, SECRET, { expiresIn: "1h" });
-
-        return res.status(200).json({ token })
+        return res.status(200).json(users.rows);
     } catch (error) {
         return res.status(401).json({ message: "Cant login" });
     }
-}
-
+};
 //TODO: secure routes
