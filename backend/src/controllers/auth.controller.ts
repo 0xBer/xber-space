@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import pool from "../db.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+const SECRET = process.env.SECRET as string;
 
 export const register = async (req: Request, res: Response) => {
     try {
@@ -16,7 +21,9 @@ export const register = async (req: Request, res: Response) => {
 
         const newUser = await pool.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
 
-        return res.status(200).json(newUser.rows);
+        const token = jwt.sign(newUser.rows[0], SECRET, { expiresIn: '1h' });
+
+        return res.status(200).json({ token });
     } catch (error) {
         return res.status(401).json({ message: "Cant register" });
     }
@@ -38,7 +45,9 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Cant login. Wrong info provided" });
         }
 
-        return res.status(200).json(user.rows);
+        const token = jwt.sign(user.rows[0], SECRET, { expiresIn: '1h' })
+
+        return res.status(200).json({ token });
     } catch (error) {
         return res.status(401).json({ message: "Cant login. Server Error" });
     }
