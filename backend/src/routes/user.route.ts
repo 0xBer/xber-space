@@ -5,6 +5,6 @@ const router = e.Router();
 router.get('/', User.getAllUsers);
 router.get('/:id', User.getOneUser);
 router.patch('/:id');
-router.delete('/:id');
+router.delete('/:id', User.deleteUser);
 
 export default router;

@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import pool from "../db.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
+import jwtParser from "../utils/jwtParses.js";
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
@@ -39,7 +40,7 @@ export const createPost: RequestHandler = async (req, res) => {
         const { title, body } = req.body;
 
         const token = req.headers.authorization as string;
-        const decoded = jwt.verify(token, SECRET) as JwtPayload;
+        const decoded = jwtParser(token, SECRET);
         const author = decoded.username;
 
         const post = await pool.query('INSERT INTO posts (title, body, author) VALUES ($1, $2, $3) RETURNING *', [title, body, author]);
