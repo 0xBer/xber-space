@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { RequestHandler } from "express";
 import pool from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -7,7 +7,7 @@ dotenv.config();
 
 const SECRET = process.env.SECRET as string;
 
-export const register = async (req: Request, res: Response) => {
+export const register: RequestHandler = async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -29,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login: RequestHandler = async (req, res) => {
     try {
         const { username, password } = req.body;
 

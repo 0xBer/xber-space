@@ -1,10 +1,9 @@
-import { Request, Response } from "express";
+import { RequestHandler } from "express";
 import pool from "../db.js";
-import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const getOneUser = async (req: Request, res: Response) => {
+export const getOneUser: RequestHandler = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -19,7 +18,7 @@ export const getOneUser = async (req: Request, res: Response) => {
     }
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers: RequestHandler = async (req, res) => {
     try {
         const users = await pool.query("SELECT * FROM users");
 
@@ -32,4 +31,3 @@ export const getAllUsers = async (req: Request, res: Response) => {
         return res.status(401).json({ message: "Cant get list of users" });
     }
 };
-//TODO: secure routes

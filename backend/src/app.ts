@@ -1,13 +1,15 @@
 import express from "express";
-import userRoutes from "./routes/user.route.js";
-import authRoutes from "./routes/autentication.routes.js";
+import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/autentication.route.js";
 import { authCheck } from "./middlewares/authorization.middleware.js";
+import postRouter from "./routes/post.route.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/auth', authRoutes)
-app.use('/users', authCheck, userRoutes);
+app.use('/auth', authRouter);
+app.use('/users', authCheck, userRouter);
+app.use('/posts', authCheck, postRouter);
 
 export default app;
