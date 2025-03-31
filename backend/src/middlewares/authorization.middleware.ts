@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
 
-export const authCheck = (req: Request, res: Response, next: NextFunction) => {
+export const authCheck: RequestHandler = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
