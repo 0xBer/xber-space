@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import pool from "../db.js";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
 import jwtParser from "../utils/jwtParses.js";
 dotenv.config();
