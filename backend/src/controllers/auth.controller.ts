@@ -9,9 +9,9 @@ const SECRET = process.env.SECRET as string;
 
 export const register: RequestHandler = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, email, password } = req.body;
 
-        const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
         if (userExists.rows.length > 0) {
             return res.status(400).json({ message: "User already exists" });
@@ -19,7 +19,7 @@ export const register: RequestHandler = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await pool.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
+        const newUser = await pool.query("INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *", [username, email, hashedPassword]);
 
         const token = jwt.sign(newUser.rows[0], SECRET, { expiresIn: '1h' });
 
@@ -31,9 +31,9 @@ export const register: RequestHandler = async (req, res) => {
 
 export const login: RequestHandler = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, username, password } = req.body;
 
-        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        const user = await pool.query("SELECT * FROM users WHERE username = $1 OR email = $2", [username, email]);
 
         if (user.rows.length === 0) {
             return res.status(401).json({ message: "Cant login. Wrong info provided" });
