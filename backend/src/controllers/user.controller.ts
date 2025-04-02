@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import pool from "../db.js";
 import dotenv from "dotenv";
-import jwtParser from "../utils/jwtParses.js";
+import jwtParser from "../utils/jwtParser.js";
 import bcrypt from "bcrypt";
 
 dotenv.config();
@@ -54,7 +54,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
 export const updateUser: RequestHandler = async (req, res) => {
     try {
-        const { username, password, newPassword } = req.body;
+        const { username, email, currentPassword, newPassword } = req.body;
         const { id } = req.params;
 
         const token = req.headers.authorization as string;
@@ -65,13 +65,13 @@ export const updateUser: RequestHandler = async (req, res) => {
             return res.status(401).json({ message: `You cant patch this user, your id ${decoded.id}` });
         }
 
-        if (password != decoded.password) {
+        if (currentPassword != decoded.password) {
             return res.status(401).json({ message: `You cant patch this user, wrong password` });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        const updatedUser = await pool.query('UPDATE users SET username = $1, password = $2 WHERE id = $3', [username, hashedPassword, id]);
+        const updatedUser = await pool.query('UPDATE users SET username = $1, password = $2, email = $3 WHERE id = $4', [username, hashedPassword, email, id]);
 
         return res.status(200).json({ message: 'User updated successfully' });
     } catch (error) {

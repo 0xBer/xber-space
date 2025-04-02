@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import pool from "../db.js";
 import dotenv from "dotenv";
-import jwtParser from "../utils/jwtParses.js";
+import jwtParser from "../utils/jwtParser.js";
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
