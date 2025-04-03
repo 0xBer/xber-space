@@ -9,9 +9,11 @@ const SECRET = process.env.SECRET as string;
 export const getAllPosts: RequestHandler = async (req, res) => {
     try {
         const posts = await pool.query('SELECT * FROM posts');
+
         if (posts.rows.length === 0) {
             return res.status(401).json({ message: "No posts found" });
         }
+
         return res.status(200).json(posts.rows);
     } catch (error) {
         return res.status(400).json({ message: "Cant get posts" });
