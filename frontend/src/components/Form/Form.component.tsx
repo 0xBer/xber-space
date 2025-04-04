@@ -7,6 +7,8 @@ function Form() {
                 <div className={styles.inputs}>
                     <label htmlFor="mailorname">Name/email</label>
                     <input type="text" id="mailorname" />
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" />
                 </div>
                 <div className={styles.buttonWrapper}>
                     <button>Login</button>

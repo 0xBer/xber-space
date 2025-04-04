@@ -14,7 +14,24 @@
 .inputs {
     position: absolute;
     display: flex;
+    flex-direction: column;
+    top: 23%;
 
+    label {
+        color: #c6d0f5;
+    }
+
+    input {
+        background-color: #414559;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 2px solid red;
+        color: #c6d0f5;
+    }
+
+    input:focus {
+        outline: none;
+    }
 }
 
 .buttonWrapper {
