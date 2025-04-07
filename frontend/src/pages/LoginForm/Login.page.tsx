@@ -4,6 +4,9 @@ function LoginPage() {
     return (
         <>
             <div className="form">
+                <h1>
+                    Xber
+                </h1>
                 <form className="loginForm">
                     <input type="text" placeholder="Username, email" required />
                     <input type="password" placeholder="Password" required />
