@@ -1,10 +1,20 @@
-import Form from "../../components/Form/Form.component";
 import "./Login.modules.scss";
 
 function LoginPage() {
     return (
         <>
-            <Form />
+            <div className="form">
+                <form className="loginForm">
+                    <input type="text" placeholder="Username, email" required />
+                    <input type="password" placeholder="Password" required />
+                    <button>Log in</button>
+                </form>
+                <div className="orDiv">
+                    <hr />
+                    <p>OR</p>
+                    <a href="">Log in with Google</a>
+                </div>
+            </div>
         </>
     )
 }
