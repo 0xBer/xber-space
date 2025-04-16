@@ -4,10 +4,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
 }
 
 input,
-button {
+input[type="submit"] {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -27,7 +28,9 @@ p {
     display: flex;
     flex-direction: column;
 
+
     h1 {
+        margin: 0;
         align-self: center;
         color: #c6d0f5;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -55,7 +58,7 @@ p {
         }
     }
 
-    button {
+    input[type="submit"] {
         border: none;
         border-radius: 7px;
         transition: ease-in-out .2s;
