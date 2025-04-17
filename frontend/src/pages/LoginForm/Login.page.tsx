@@ -11,8 +11,9 @@ function LoginPage() {
         try {
             const response = axios.post("/auth/login", {
                 username,
-                password: password,
+                password,
             });
+            console.log(response)
         } catch (error) {
             console.error(error);
         }
