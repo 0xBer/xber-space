@@ -5,6 +5,7 @@ import { useState } from "react";
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPass] = useState('');
+    const [isLogged, setIsLogged] = useState(false);
 
     const handleFormSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -13,8 +14,10 @@ function LoginPage() {
                 username,
                 password,
             });
+
             console.log(response)
         } catch (error) {
+            setVisibility(true);
             console.error(error);
         }
     }
