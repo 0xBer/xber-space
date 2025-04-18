@@ -36,19 +36,19 @@ export const login: RequestHandler = async (req, res) => {
         const user = await pool.query("SELECT * FROM users WHERE username = $1 OR email = $2", [username, email]);
 
         if (user.rows.length === 0) {
-            return res.status(401).json({ message: "Cant login. Wrong info provided" });
+            return res.status(400).json({ message: "Cant login. Wrong info provided" });
         }
 
         const isMatch = await bcrypt.compare(password, user.rows[0].password);
 
         if (!isMatch) {
-            return res.status(401).json({ message: "Cant login. Wrong info provided" });
+            return res.status(400).json({ message: "Cant login. Wrong info provided" });
         }
 
         const token = jwt.sign(user.rows[0], SECRET, { expiresIn: '1h' })
 
         return res.status(200).json({ token });
     } catch (error) {
-        return res.status(401).json({ message: "Cant login. Server Error" });
+        return res.status(400).json({ message: "Cant login. Server Error" });
     }
 };

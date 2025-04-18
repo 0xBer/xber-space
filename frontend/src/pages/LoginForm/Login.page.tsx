@@ -1,23 +1,26 @@
 import "./Login.modules.scss";
 import axios from "../../axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPass] = useState('');
-    const [isLogged, setIsLogged] = useState(false);
+    const navigate = useNavigate();
 
-    const handleFormSubmit = (e: React.SyntheticEvent) => {
+    const handleFormSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         try {
-            const response = axios.post("/auth/login", {
+            const response = await axios.post("/auth/login", {
                 username,
                 password,
             });
+            const token = response.data.token;
 
-            console.log(response)
+            localStorage.setItem("Auth", token);
+
+            navigate("/home");
         } catch (error) {
-            setVisibility(true);
             console.error(error);
         }
     }
@@ -34,12 +37,15 @@ function LoginPage() {
                         placeholder="Username, email"
                         required
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)} />
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                     <input
                         type="password"
                         placeholder="Password"
-                        required value={password}
-                        onChange={(e) => setPass(e.target.value)} />
+                        required
+                        value={password}
+                        onChange={(e) => setPass(e.target.value)}
+                    />
                     <input type="submit" value="Log in"></input>
                 </form>
                 <div className="orDiv">
