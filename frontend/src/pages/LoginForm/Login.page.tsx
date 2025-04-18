@@ -1,4 +1,4 @@
-import "./Login.modules.scss";
+import style from "./Login.module.scss";
 import axios from "../../axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ function LoginPage() {
 
     const handleFormSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+
         try {
             const response = await axios.post("/auth/login", {
                 username,
@@ -19,7 +20,7 @@ function LoginPage() {
 
             localStorage.setItem("Auth", token);
 
-            navigate("/home");
+            navigate("/chats");
         } catch (error) {
             console.error(error);
         }
