@@ -15,11 +15,11 @@ const users = [
 function Panel() {
     return (
         <>
-            <div className="panel">
+            <div className={style.panel}>
                 <ul>
                     {users.map(user => (
-                        <li>
-                            <User className="user" img={user.avatar} name={user.username} />
+                        <li key={Math.random()}>
+                            <User img={user.avatar} name={user.username} />
                         </li>
                     ))}
                 </ul>

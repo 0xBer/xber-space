@@ -28,11 +28,8 @@ function LoginPage() {
 
     return (
         <>
-            <div className="form">
-                <h1>
-                    Xber
-                </h1>
-                <form className="loginForm" onSubmit={handleFormSubmit}>
+            <div className={style.form}>
+                <form className={style.loginForm} onSubmit={handleFormSubmit}>
                     <input
                         type="text"
                         placeholder="Username, email"
@@ -49,11 +46,13 @@ function LoginPage() {
                     />
                     <input type="submit" value="Log in"></input>
                 </form>
-                <div className="orDiv">
-                    <hr />
-                    <p>OR</p>
-                    <a href="">Log in with Google</a>
+                <div className={style.separator}>
+                    <div className={style.line}>
+                        <span>OR</span>
+                    </div>
+
                 </div>
+                <a href="">Log in with Google</a>
             </div>
         </>
     )

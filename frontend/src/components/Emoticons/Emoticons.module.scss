@@ -1,0 +1,24 @@
+@use "../../styles/colors" as *;
+
+.emoticonsWrapper {
+    background-color: $surface-color;
+    border-left: 1px solid $border-color;
+    width: calc(100% / 3);
+    box-shadow: 0 0 5px black;
+    display: flex;
+    flex-direction: column;
+}
+
+.switches {
+    ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+        color: $text-color;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: 600;
+        list-style: none;
+    }
+}
