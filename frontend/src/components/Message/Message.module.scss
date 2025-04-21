@@ -1,0 +1,24 @@
+@use "../../styles/colors" as *;
+
+.message {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+
+    &.sent {
+        flex-direction: row-reverse;
+    }
+}
+
+
+
+.msgText {
+    background-color: #5c5f77;
+    padding: 10px;
+    border-radius: 10px;
+    color: $text-color;
+    font-weight: 600;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0 10px;
+    max-width: calc(100% / 2);
+}
