@@ -1,5 +1,5 @@
 import e from "express";
-import * as User from "../controllers/user.controller.js"
+import * as User from "../controllers/user.controller"
 const router = e.Router();
 
 router.get('/', User.getAllUsers);

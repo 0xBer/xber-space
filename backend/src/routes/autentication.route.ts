@@ -1,5 +1,5 @@
 import e from "express";
-import * as Auth from "../controllers/auth.controller.js";
+import * as Auth from "../controllers/auth.controller";
 const router = e.Router();
 
 router.post('/register', Auth.register);

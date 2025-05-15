@@ -13,9 +13,9 @@ export const authCheck: RequestHandler = (req, res, next) => {
             return res.status(400).json({ message: "Not authorized" });
         }
 
-        const isAuth = jwt.verify(authHeader, SECRET);
+        const token = jwt.verify(authHeader, SECRET);
 
-        if (!isAuth) {
+        if (!token) {
             return res.status(400).json({ message: "Wrong token" });
         }
 

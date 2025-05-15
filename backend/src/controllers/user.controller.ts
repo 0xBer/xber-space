@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
-import pool from "../db.js";
 import dotenv from "dotenv";
-import jwtParser from "../utils/jwtParser.js";
+import jwtParser from "../utils/jwtParser";
 import bcrypt from "bcrypt";
+import client from "../db";
 
 dotenv.config();
 
@@ -10,15 +10,17 @@ const SECRET = process.env.SECRET as string;
 
 export const getOneUser: RequestHandler = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id }= req.params;
 
-        const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+        const user = await client.user.findUnique({
+            where: { id: Number(id) }
+        });
 
-        if (user.rows.length === 0) {
+        if (user === null) {
             return res.status(401).json({ message: `Cant get user with id: ${id}` });
         }
 
-        return res.status(200).json(user.rows)
+        return res.status(200).json({ user })
     } catch (error) {
         return res.status(401).json({ message: "Cant get user" });
     }
@@ -26,9 +28,9 @@ export const getOneUser: RequestHandler = async (req, res) => {
 
 export const getAllUsers: RequestHandler = async (req, res) => {
     try {
-        const users = await pool.query("SELECT * FROM users");
+        const users = await client.user.findMany();
 
-        return res.status(200).json(users.rows);
+        return res.status(200).json({ users });
     } catch (error) {
         return res.status(401).json({ message: "Cant get list of users" });
     }
@@ -44,9 +46,11 @@ export const deleteUser: RequestHandler = async (req, res) => {
             return res.status(401).json({ message: `You cant delete this user, your id ${decoded.id}` });
         }
 
-        const user = await pool.query('DELETE FROM users WHERE id = $1', [id]);
+        const user = await client.user.delete({
+            where: { id: Number(id) }
+        })
 
-        return res.status(200).json({ message: 'User deleted succesfully' });
+        return res.status(200).json({ message: 'User deleted succesfully', user });
     } catch (error) {
         return res.status(400).json({ message: 'Cant delete user' });
     }
@@ -54,7 +58,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
 export const updateUser: RequestHandler = async (req, res) => {
     try {
-        const { username, email, currentPassword, newPassword } = req.body;
+        const { username, password } = req.body;
         const { id } = req.params;
 
         const token = req.headers.authorization as string;
@@ -65,15 +69,17 @@ export const updateUser: RequestHandler = async (req, res) => {
             return res.status(401).json({ message: `You cant patch this user, your id ${decoded.id}` });
         }
 
-        if (currentPassword != decoded.password) {
-            return res.status(401).json({ message: `You cant patch this user, wrong password` });
-        }
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const updatedUser = await client.user.update({
+            where: { id: Number(id) },
+            data: {
+                username,
+                password: hashedPassword,
+            }
+        })
 
-        const updatedUser = await pool.query('UPDATE users SET username = $1, password = $2, email = $3 WHERE id = $4', [username, hashedPassword, email, id]);
-
-        return res.status(200).json({ message: 'User updated successfully' });
+        return res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {
         return res.status(400).json({ message: "Cant update user", error: error });
     }
